@@ -177,3 +177,5 @@ shopt -s cdable_vars
 # export documents="$HOME/Documents"
 # export dropbox="$HOME/Dropbox"
 
+
+homeshick --quiet refresh
