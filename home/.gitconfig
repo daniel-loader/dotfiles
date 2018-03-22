@@ -1,0 +1,11 @@
+
+# This is Git's per-user configuration file.
+[user]
+	name = Daniel Loader
+	email = spicypixel@gmail.com
+[core] 
+	editor = vim
+[log] 
+	decorate = full
+[push]
+	default = simple
