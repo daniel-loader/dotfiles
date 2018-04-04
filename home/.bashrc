@@ -59,13 +59,14 @@ function mirror_site() {
 	wget --mirror -p --convert-links -P ./ $1
 }
 
-url2cloud(){ # use: url2rclone http://url.file share/Import 
-	TMPFILE=`mktemp`; TMPDIR=`mktemp -d`; CLOUDPATH="$2" # preare temp file/directory
-	wget "$1" -O $TMPFILE || echo "Download failed" # download url specified 
-	unzip -d $TMPDIR $TMPFILE 
-	mv -v $TMPDIR/* $CLOUDPATH || echo "Move failed"
-	rm $TMPFILE
+function url2cloud () {
+    TMPFILE=`mktemp`; TMPDIR=`mktemp -d`; CLOUDPATH="$2" # preare temp file/directory
+    wget "$1" -O $TMPFILE || echo "Download failed" # download url specified
+    unzip -d $TMPDIR $TMPFILE
+    mv -v $TMPDIR/* $CLOUDPATH || echo "Move failed"
+    rm $TMPFILE
 }
+
 	
 
 # prefix
