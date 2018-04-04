@@ -29,11 +29,13 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # custom shortcuts
  alias ?='history | more' 		# displays history
  alias c='clear'                                                         
- alias sta="sudo tmux attach"
+ alias screen='screen -s /bin/bash'	# exec bash on screen
+ alias s='screen'			# one character screen
+ alias ss='s -dRR'
  alias ..='cd ..'
- alias updateapt='apt update && apt upgrade'
- alias cleanapt='apt autoclean && apt autoremove'
- alias tb="nc dump.spicypixel.co.uk 9999"
+ alias update_all='aptitude update && aptitude upgrade'
+ alias clean_packages='aptitude clean && aptitude autoclean && aptitude purge'
+ alias aptclean='aptitude clean && aptitude autoclean && aptitude purge'
 
 #Custom Functions
 
@@ -117,6 +119,9 @@ bind "set show-all-if-ambiguous on"
 
 # Immediately add a trailing slash when autocompleting symlinks to directories
 bind "set mark-symlinked-directories on"
+
+# Cycle through tab suggestions
+bind TAB:menu-complete
 
 ## SANE HISTORY DEFAULTS ##
 
