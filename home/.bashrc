@@ -27,15 +27,15 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 # custom shortcuts
- alias ?='history | more' 		# displays history
+ alias sta='sudo tmux attach'	# reattach to root tmux using user dotfiles
+ alias irc='tmux attach -t irc'	# reattach to weechat running in session 'irc'
+ alias ?='history | more'	# displays history
  alias c='clear'                                                         
  alias screen='screen -s /bin/bash'	# exec bash on screen
- alias s='screen'			# one character screen
- alias ss='s -dRR'
  alias ..='cd ..'
- alias update_all='aptitude update && aptitude upgrade'
- alias clean_packages='aptitude clean && aptitude autoclean && aptitude purge'
- alias aptclean='aptitude clean && aptitude autoclean && aptitude purge'
+ alias updateapt='apt update && apt upgrade'
+ alias cleanapt='apt autoclean && apt autoremove'
+ alias tb="nc dump.spicypixel.co.uk 9999"
 
 #Custom Functions
 
@@ -48,21 +48,25 @@ function free_space_root(){
 }
 
 function local_ips(){
- ifconfig | grep "inet addr" | awk '{print $2}' | awk -F: '{print $2}'
+	ifconfig | grep "inet addr" | awk '{print $2}' | awk -F: '{print $2}'
 }
 
 function connected_ips(){
-        netstat -lantp | grep ESTABLISHED |awk '{print $5}' | awk -F: '{print $1}' | sort -u
+    netstat -lantp | grep ESTABLISHED |awk '{print $5}' | awk -F: '{print $1}' | sort -u
 }
 
 function mirror_site() {
-
-        wget --mirror -p --convert-links -P ./ $1
+	wget --mirror -p --convert-links -P ./ $1
 }
 
-function get_links() {
-        lynx -dump http://$1 | awk '/http/{print $2}' | sort -u
+url2cloud(){ # use: url2rclone http://url.file share/Import 
+	TMPFILE=`mktemp`; TMPDIR=`mktemp -d`; CLOUDPATH="$2" # preare temp file/directory
+	wget "$1" -O $TMPFILE || echo "Download failed" # download url specified 
+	unzip -d $TMPDIR $TMPFILE 
+	mv -v $TMPDIR/* $CLOUDPATH || echo "Move failed"
+	rm $TMPFILE
 }
+	
 
 # prefix
 export PS1='[\u@\h \W]\$ '
