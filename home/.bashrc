@@ -39,34 +39,56 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 
 #Custom Functions
 
-function free_mem(){
+function freemem(){
     awk '/MemFree/{print $2}' /proc/meminfo
 }
 
-function free_space_root(){
+function freespaceroot(){
     df -kh . | awk 'END {print $4}'
 }
 
-function local_ips(){
+function localips(){
 	ifconfig | grep "inet addr" | awk '{print $2}' | awk -F: '{print $2}'
 }
 
-function connected_ips(){
+function connectedips(){
     netstat -lantp | grep ESTABLISHED |awk '{print $5}' | awk -F: '{print $1}' | sort -u
 }
 
-function mirror_site() {
+function mirrorsite() {
 	wget --mirror -p --convert-links -P ./ $1
 }
 
-function url2cloud () {
-    TMPFILE=`mktemp`; TMPDIR=`mktemp -d`; CLOUDPATH="$2" # preare temp file/directory
-    wget "$1" -O $TMPFILE || echo "Download failed" # download url specified
-    unzip -d $TMPDIR $TMPFILE
-    mv -v $TMPDIR/* $CLOUDPATH || echo "Move failed"
-    rm $TMPFILE
+function plexscan() {
+    if [ -z "$1" ]
+		then curl -d "eventType=Manual&filepath=$PWD" "http://localhost:3467/4e210bd0216d4906afda744a29a52a24"
+	else
+		curl -d "eventType=Manual&filepath=$1" "http://localhost:3467/4e210bd0216d4906afda744a29a52a24"
+	fi
 }
 
+function url2cloud() {
+    TMPFILE=$(mktemp); TMPDIR=$(mktemp -d); CLOUDPATH="$1"; GRABURL="$2"; DESTNAME="$3"
+    if [ -z "$DESTNAME" ]  
+        then DESTNAME=$(basename $2)
+    fi
+    if [ ! -d "$CLOUDPATH" ]   
+        then printf "\nDestination directory doesn't exist"
+        return
+    fi
+    printf "\nDownloading $GRABURL to $TMPFILE\n"; wget "$GRABURL" -O "$TMPFILE" -q --show-progress
+    FILETYPE=$(file --mime-type -b "$TMPFILE")
+    printf "\nMime-type detected: $FILETYPE"
+    case $FILETYPE in
+        application/zip)
+            printf "\nUnzipping source file: "; unzip -d $TMPDIR $TMPFILE
+            printf "\nMoving unzipped files: "; mv -v "$TMPDIR"/* "$CLOUDPATH"
+            printf "\nTemporary file "; #rm -v "$TMPFILE"
+            ;;
+        *)
+            printf "\nMoving downloaded file: "; mv -v "$TMPFILE" "$CLOUDPATH"/"$DESTNAME"
+    esac
+}
 	
 
 # prefix
