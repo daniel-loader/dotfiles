@@ -224,9 +224,9 @@ RESET_COLOUR="\033[0m"
 # Turn the prompt symbol red if the user is root
 if [ $(id -u) -eq 0 ];
 then # you are root, make the prompt red
-    export PS1="\[$ROOT_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] "
+    export PS1="\[$ROOT_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \$ "
 else
-    export PS1="\[$USER_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] "
+    export PS1="\[$USER_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \$ "
 fi
 
 homeshick --quiet refresh
