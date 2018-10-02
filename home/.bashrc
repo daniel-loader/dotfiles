@@ -182,11 +182,13 @@ bind '"\e[D": backward-char'
 ## BETTER DIRECTORY NAVIGATION ##
 
 # Prepend cd to directory names automatically
-shopt -s autocd 2> /dev/null
+ shopt -s autocd 2> /dev/null
 # Correct spelling errors during tab-completion
 shopt -s dirspell 2> /dev/null
 # Correct spelling errors in arguments supplied to cd
 shopt -s cdspell 2> /dev/null
+# cd tab navigation limited to directories only
+complete -d cd
 
 # This defines where cd looks for targets
 # Add the directories you want to have fast access to, separated by colon
@@ -195,7 +197,7 @@ CDPATH="."
 
 # This allows you to bookmark your favorite places across the file system
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
-shopt -s cdable_vars
+# shopt -s cdable_vars
 
 # Examples:
 # export dotfiles="$HOME/dotfiles"
@@ -227,6 +229,5 @@ then # you are root, make the prompt red
     export PS1="\[$ROOT_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \\$ "
 else
     export PS1="\[$USER_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \\$ "
-fi
 
 homeshick --quiet refresh
