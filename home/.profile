@@ -18,7 +18,7 @@ fi
 
 # Note: Bash on Windows does not currently apply umask properly.
 if [ "$(umask)" = "0000" ]; then
->   umask 022
+    umask 022
 fi
 
 # set PATH so it includes user's private bin directories
