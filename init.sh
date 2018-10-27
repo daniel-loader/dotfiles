@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
-# elevate to root
-if [ $EUID != 0 ]; then
-    sudo "$0" "$@"
-    exit $?
-fi
+
+set -e
 
 apt update && \
 apt upgrade -y && \
 apt install htop tmux git -y && \
 apt autoremove -y && \
-apt autoclean -y
+apt autoclean -y || exit 2
 
-exit
 
+gitfunc(){
 git clone git://github.com/andsens/homeshick.git $HOME/.homesick/repos/homeshick
 $HOME/.homesick/repos/homeshick/bin/homeshick clone danielloader/dotfiles
-source $HOME/.bashrc
+echo "Remember to source ~/.bashrc after the script"
+}
+export -f gitfunc
+
+su "$SUDO_USER" -c 'gitfunc'
 
 exit
