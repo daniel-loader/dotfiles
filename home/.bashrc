@@ -1,5 +1,19 @@
-# environment variable
-export PATH=$PATH:$HOME/bin/
+# environment variables
+    # Locally built binaries when unable to sudo
+    export PATH=$PATH:$HOME/bin/
+    # Install Ruby Gems to ~/gems
+    export GEM_HOME=$HOME/gems
+    export PATH=$HOME/gems/bin:$PATH
+
+# WSL specfic exports 
+if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
+    echo "Windows 10 Bash Detected"
+    export DISPLAY=:0
+    # Note: Bash on Windows does not currently apply umask properly.
+	if [ "$(umask)" = "0000" ]; then
+	>   umask 022
+	fi
+fi
 
 # enable bash completion in interactive shells
 if ! shopt -oq posix; then
@@ -233,6 +247,3 @@ fi
 
 homeshick --quiet refresh
 
-# Install Ruby Gems to ~/gems
-export GEM_HOME=$HOME/gems
-export PATH=$HOME/gems/bin:$PATH
