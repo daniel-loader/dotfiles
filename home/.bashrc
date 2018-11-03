@@ -9,10 +9,6 @@
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
     echo "Windows 10 Bash Detected"
     export DISPLAY=:0
-    # Note: Bash on Windows does not currently apply umask properly.
-	if [ "$(umask)" = "0000" ]; then
-	>   umask 022
-	fi
 fi
 
 # enable bash completion in interactive shells
@@ -121,129 +117,135 @@ then
   echo "sensible.bash: Keep your software up-to-date!"
 fi
 
-## GENERAL OPTIONS ##
 
-# Prevent file overwrite on stdout redirection
-# Use `>|` to force redirection to an existing file
-set -o noclobber
+if [ -t 1 ]
+then
+    ## GENERAL OPTIONS ##
 
-# Update window size after every command
-shopt -s checkwinsize
+    # Prevent file overwrite on stdout redirection
+    # Use `>|` to force redirection to an existing file
+    set -o noclobber
 
-# Automatically trim long paths in the prompt (requires Bash 4.x)
-PROMPT_DIRTRIM=2
+    # Update window size after every command
+    shopt -s checkwinsize
 
-# Enable history expansion with space
-# E.g. typing !!<space> will replace the !! with your last command
-bind Space:magic-space
+    # Automatically trim long paths in the prompt (requires Bash 4.x)
+    PROMPT_DIRTRIM=2
 
-# Turn on recursive globbing (enables ** to recurse all directories)
-shopt -s globstar 2> /dev/null
+    # Enable history expansion with space
+    # E.g. typing !!<space> will replace the !! with your last command
+    bind Space:magic-space
 
-# Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
+    # Turn on recursive globbing (enables ** to recurse all directories)
+    shopt -s globstar 2> /dev/null
 
-## SMARTER TAB-COMPLETION (Readline bindings) ##
+    # Case-insensitive globbing (used in pathname expansion)
+    shopt -s nocaseglob;
 
-# Perform file completion in a case insensitive fashion
-bind "set completion-ignore-case on"
+    ## SMARTER TAB-COMPLETION (Readline bindings) ##
 
-# Treat hyphens and underscores as equivalent
-bind "set completion-map-case on"
+    # Perform file completion in a case insensitive fashion
+    bind "set completion-ignore-case on"
 
-# Display matches for ambiguous patterns at first tab press
-bind "set show-all-if-ambiguous on"
+    # Treat hyphens and underscores as equivalent
+    bind "set completion-map-case on"
 
-# Immediately add a trailing slash when autocompleting symlinks to directories
-bind "set mark-symlinked-directories on"
+    # Display matches for ambiguous patterns at first tab press
+    bind "set show-all-if-ambiguous on"
 
-# Cycle through tab suggestions
-bind TAB:menu-complete
+    # Immediately add a trailing slash when autocompleting symlinks to directories
+    bind "set mark-symlinked-directories on"
 
-## SANE HISTORY DEFAULTS ##
+    # Cycle through tab suggestions
+    bind TAB:menu-complete
 
-# Append to the history file, don't overwrite it
-shopt -s histappend
+    ## SANE HISTORY DEFAULTS ##
 
-# Save multi-line commands as one command
-shopt -s cmdhist
+    # Append to the history file, don't overwrite it
+    shopt -s histappend
 
-# Record each line as it gets issued
-PROMPT_COMMAND='history -a'
+    # Save multi-line commands as one command
+    shopt -s cmdhist
 
-# Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=500000
-HISTFILESIZE=100000
+    # Record each line as it gets issued
+    PROMPT_COMMAND='history -a'
 
-# Avoid duplicate entries
-HISTCONTROL="erasedups:ignoreboth"
+    # Huge history. Doesn't appear to slow things down, so why not?
+    HISTSIZE=500000
+    HISTFILESIZE=100000
 
-# Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+    # Avoid duplicate entries
+    HISTCONTROL="erasedups:ignoreboth"
 
-# Use standard ISO 8601 timestamp
-# %F equivalent to %Y-%m-%d
-# %T equivalent to %H:%M:%S (24-hours format)
-HISTTIMEFORMAT='%F %T '
+    # Don't record some commands
+    export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
-# Enable incremental history search with up/down arrows (also Readline goodness)
-# Learn more about this here: http://codeinthehole.com/writing/the-most-important-command-line-tip-incremental-history-searching-with-inputrc/
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
-bind '"\e[C": forward-char'
-bind '"\e[D": backward-char'
+    # Use standard ISO 8601 timestamp
+    # %F equivalent to %Y-%m-%d
+    # %T equivalent to %H:%M:%S (24-hours format)
+    HISTTIMEFORMAT='%F %T '
 
-## BETTER DIRECTORY NAVIGATION ##
+    # Enable incremental history search with up/down arrows (also Readline goodness)
+    # Learn more about this here: http://codeinthehole.com/writing/the-most-important-command-line-tip-incremental-history-searching-with-inputrc/
+    bind '"\e[A": history-search-backward'
+    bind '"\e[B": history-search-forward'
+    bind '"\e[C": forward-char'
+    bind '"\e[D": backward-char'
 
-# Prepend cd to directory names automatically
- shopt -s autocd 2> /dev/null
-# Correct spelling errors during tab-completion
-shopt -s dirspell 2> /dev/null
-# Correct spelling errors in arguments supplied to cd
-shopt -s cdspell 2> /dev/null
-# cd tab navigation limited to directories only
-complete -d cd
+    ## BETTER DIRECTORY NAVIGATION ##
 
-# This defines where cd looks for targets
-# Add the directories you want to have fast access to, separated by colon
-# Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
-CDPATH="."
+    # Prepend cd to directory names automatically
+    shopt -s autocd 2> /dev/null
+    # Correct spelling errors during tab-completion
+    shopt -s dirspell 2> /dev/null
+    # Correct spelling errors in arguments supplied to cd
+    shopt -s cdspell 2> /dev/null
+    # cd tab navigation limited to directories only
+    complete -d cd
 
-# This allows you to bookmark your favorite places across the file system
-# Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
-# shopt -s cdable_vars
+    # This defines where cd looks for targets
+    # Add the directories you want to have fast access to, separated by colon
+    # Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
+    CDPATH="."
 
-# Examples:
-# export dotfiles="$HOME/dotfiles"
-# export projects="$HOME/projects"
-# export documents="$HOME/Documents"
-# export dropbox="$HOME/Dropbox"
+    # This allows you to bookmark your favorite places across the file system
+    # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
+    # shopt -s cdable_vars
+
+    # Examples:
+    # export dotfiles="$HOME/dotfiles"
+    # export projects="$HOME/projects"
+    # export documents="$HOME/Documents"
+    # export dropbox="$HOME/Dropbox"
 
 
-# prefix
-git_prompt_color () {
-  if git rev-parse --git-dir > /dev/null 2>&1; then
-    if ! git status | grep "nothing to commit" > /dev/null 2>&1; then
-      echo -e "\033[0;31m"
-      return 0
+    # prefix
+    git_prompt_color () {
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        if ! git status | grep "nothing to commit" > /dev/null 2>&1; then
+        echo -e "\033[0;31m"
+        return 0
+        fi
     fi
-  fi
-  echo -e "\033[0;37m"
-}
+    echo -e "\033[0;37m"
+    }
 
-USER_COLOUR="\033[1;32m"
-ROOT_COLOUR="\033[1;31m"
-HOST_COLOUR="\033[1;30m"
-DIR_COLOUR="\033[1;34m"
-RESET_COLOUR="\033[0m"
+    USER_COLOUR="\033[1;32m"
+    ROOT_COLOUR="\033[1;31m"
+    HOST_COLOUR="\033[1;30m"
+    DIR_COLOUR="\033[1;34m"
+    RESET_COLOUR="\033[0m"
 
-# Turn the prompt symbol red if the user is root
-if [ $(id -u) -eq 0 ];
-then # you are root, make the prompt red
-    export PS1="\[$ROOT_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \\$ "
-else
-    export PS1="\[$USER_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \\$ "
+    # Turn the prompt symbol red if the user is root
+    if [ $(id -u) -eq 0 ];
+    then # you are root, make the prompt red
+        export PS1="\[$ROOT_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \\$ "
+    else
+        export PS1="\[$USER_COLOUR\]\u\[$RESET_COLOUR\]@\[$HOST_COLOUR\]\h\[$RESET_COLOUR\] \[$DIR_COLOUR\]\W\[$RESET_COLOUR\] \[\$(git_prompt_color)\]•\[$RESET_COLOUR\] \\$ "
+    fi
+
 fi
+
 
 homeshick --quiet refresh
 
