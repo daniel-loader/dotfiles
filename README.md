@@ -2,6 +2,7 @@
 Personal Dotfiles for Debian derivatives 
 
 `sudo -s`
+
 `bash <(curl -s "https://raw.githubusercontent.com/danielloader/dotfiles/master/init.sh")`
 
 
