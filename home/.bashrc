@@ -9,10 +9,6 @@
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
     echo "Windows 10 Bash Detected"
     export DISPLAY=:0
-    # Note: Bash on Windows does not currently apply umask properly.
-	if [ "$(umask)" = "0000" ]; then
-	>   umask 022
-	fi
 fi
 
 # enable bash completion in interactive shells
