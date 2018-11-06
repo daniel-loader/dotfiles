@@ -46,7 +46,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
  alias updateapt='apt update && apt upgrade'
  alias cleanapt='apt autoclean && apt autoremove'
  alias tb="nc dump.spicypixel.co.uk 9999"
-
+ alias eirc='ssh htpc -t tmux attach'
 #Custom Functions
 
 function freemem(){
