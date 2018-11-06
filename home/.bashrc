@@ -1,6 +1,8 @@
 # environment variables
     # Locally built binaries when unable to sudo
     export PATH=$PATH:$HOME/bin/
+    export PATH=$PATH:$HOME/scripts/
+    export TESTSSL_INSTALL_DIR="$HOME/scripts"
     # Install Ruby Gems to ~/gems
     export GEM_HOME=$HOME/gems
     export PATH=$HOME/gems/bin:$PATH
