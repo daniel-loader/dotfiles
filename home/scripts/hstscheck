@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+for URL in "$@"
+do
+    NEW_UUID=$(openssl rand -base64 6)
+	CHECK=`curl -H 'Cache-Control: no-cache' -s -D- "https://"$URL?$NEW_UUID | grep -i "Strict-Transport-Security"`
+	if [ -z "$CHECK" ]
+	then
+		printf "$URL: No Strict-Transport Security header found\n"
+	else
+		printf "$URL: $CHECK\n"
+	fi
+done
+exit
+

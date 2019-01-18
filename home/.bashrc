@@ -1,9 +1,12 @@
 # environment variables
     # Locally built binaries when unable to sudo
     export PATH=$PATH:$HOME/bin/
+    export PATH=$PATH:$HOME/scripts/
+    export TESTSSL_INSTALL_DIR="$HOME/scripts"
     # Install Ruby Gems to ~/gems
     export GEM_HOME=$HOME/gems
     export PATH=$HOME/gems/bin:$PATH
+	export PATH=$HOME/go/bin:$PATH
 
 # WSL specfic exports 
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
@@ -46,7 +49,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
  alias updateapt='apt update && apt upgrade'
  alias cleanapt='apt autoclean && apt autoremove'
  alias tb="nc dump.spicypixel.co.uk 9999"
-
+ alias eirc='autossh htpc -t tmux attach'
 #Custom Functions
 
 function freemem(){
