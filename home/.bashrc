@@ -1,3 +1,6 @@
+# If not running interactively, don't do anything
+[[ $- == *i* ]] || return  
+
 # environment variables
     # Locally built binaries when unable to sudo
     export PATH=$PATH:$HOME/bin/
