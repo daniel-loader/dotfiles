@@ -3,13 +3,19 @@
 
 # environment variables
     # Locally built binaries when unable to sudo
-    export PATH=$PATH:$HOME/bin/
-    export PATH=$PATH:$HOME/scripts/
+    export PATH=$PATH:$HOME/.local/bin/
+    export PATH=$PATH:$HOME/.local/scripts/
     export TESTSSL_INSTALL_DIR="$HOME/scripts"
     # Install Ruby Gems to ~/gems
     export GEM_HOME=$HOME/gems
     export PATH=$HOME/gems/bin:$PATH
 	export PATH=$HOME/go/bin:$PATH
+	# Python Environments
+	export PATH="$HOME/.pyenv/bin:$PATH"
+	eval "$(pyenv init -)"
+	eval "$(pyenv virtualenv-init -)"
+    export PATH="$HOME/.poetry/bin:$PATH"
+
 
 # WSL specfic exports 
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then

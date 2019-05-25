@@ -21,8 +21,8 @@ if [ "$(umask)" = "0000" ]; then
     umask 022
 fi
 
-# set PATH so it includes user's private bin directories
-PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-export SYSTEMD_EDITOR="/usr/bin/vi" 
+export SYSTEMD_EDITOR="/usr/bin/vim" 
+export VISUAL="/usr/bin/vim"
+export EDITOR="/usr/bin/vim"
 
 
