@@ -11,11 +11,12 @@
     export PATH=$HOME/gems/bin:$PATH
 	export PATH=$HOME/go/bin:$PATH
 	# Python Environments
-	export PATH="$HOME/.pyenv/bin:$PATH"
-	eval "$(pyenv init -)"
-	eval "$(pyenv virtualenv-init -)"
-    export PATH="$HOME/.poetry/bin:$PATH"
-
+	if ! [ -x "$(command -v pyenv)" ]; then
+		export PATH="$HOME/.pyenv/bin:$PATH"
+		eval "$(pyenv init -)"
+		eval "$(pyenv virtualenv-init -)"
+    	export PATH="$HOME/.poetry/bin:$PATH"
+	fi
 
 # WSL specfic exports 
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
