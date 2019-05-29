@@ -2,21 +2,47 @@
 [[ $- == *i* ]] || return  
 
 # environment variables
-    # Locally built binaries when unable to sudo
-    export PATH=$PATH:$HOME/.local/bin/
-    export PATH=$PATH:$HOME/.local/scripts/
-    export TESTSSL_INSTALL_DIR="$HOME/scripts"
-    # Install Ruby Gems to ~/gems
-    export GEM_HOME=$HOME/gems
-    export PATH=$HOME/gems/bin:$PATH
-	export PATH=$HOME/go/bin:$PATH
-	# Python Environments
-	if ! [ -x "$(command -v pyenv)" ]; then
-		export PATH="$HOME/.pyenv/bin:$PATH"
-		eval "$(pyenv init -)"
-		eval "$(pyenv virtualenv-init -)"
-    	export PATH="$HOME/.poetry/bin:$PATH"
-	fi
+# Locally built binaries when unable to sudo
+export PATH="$PATH:$HOME/.local/bin/"
+export PATH="$PATH:$HOME/.local/scripts/"
+export TESTSSL_INSTALL_DIR="$HOME/.local/scripts"
+
+# Source ruby scripts
+if [ -x "$(command -v gem)" ]; then
+	export GEM_HOME="$HOME/.local/gems"
+	export PATH="$HOME/.local/gems/bin:$PATH"
+fi
+
+# Source go binaries
+if [ -x "$(command -v go)" ]; then
+	export GOPATH="$HOME/.local/go"
+	export PATH="$HOME/.local/go/bin:$PATH"
+fi
+
+# Source rust binaries
+if [ -x "$(command -v cargo)" ]; then
+	export CARGO_HOME="$HOME/.local/cargo"
+	export PATH="$HOME/.local/cargo/bin:$PATH"
+fi
+
+# Python Environments
+if ! [ -x "$(command -v pyenv)" ]; then
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    export PATH="$HOME/.poetry/bin:$PATH"
+fi
+poetry() {
+    if [[ $@ == "shell" ]]; then
+        if ([[ -f "$(poetry env info -p)/bin/activate" ]] && [[ -z "${VIRTUAL_ENV:-}" ]]); then
+            command source $(poetry env info -p)/bin/activate
+        else 
+            command poetry "$@"
+        fi
+    else
+        command poetry "$@"
+    fi
+}
 
 # WSL specfic exports 
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
