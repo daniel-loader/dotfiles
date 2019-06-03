@@ -26,12 +26,13 @@ if [ -x "$(command -v cargo)" ]; then
 fi
 
 # Python Environments
-if ! [ -x "$(command -v pyenv)" ]; then
+if [ -x "$(command -v pyenv)" ]; then
     export PATH="$HOME/.pyenv/bin:$PATH"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-    export PATH="$HOME/.poetry/bin:$PATH"
 fi
+
+export PATH="$HOME/.poetry/bin:$PATH"
 poetry() {
     if [[ $@ == "shell" ]]; then
         if ([[ -f "$(poetry env info -p)/bin/activate" ]] && [[ -z "${VIRTUAL_ENV:-}" ]]); then
@@ -58,6 +59,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# Restore old ls functionality
+export QUOTING_STYLE=literal
 
 # colors
  export TERM=xterm-256color
