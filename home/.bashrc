@@ -290,5 +290,5 @@ then
 fi
 
 
-homeshick --quiet refresh
+#homeshick --quiet refresh
 
