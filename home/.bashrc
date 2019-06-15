@@ -30,6 +30,7 @@ if ! [ -x "$(command -v pyenv)" ]; then
     export PATH="$HOME/.pyenv/bin:$PATH"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
+	export -f pyenv
 fi
 
 export PATH="$HOME/.poetry/bin:$PATH"
